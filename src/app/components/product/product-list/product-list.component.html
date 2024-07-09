@@ -1,0 +1,67 @@
+<div class="product-list-container">
+    <div class="header-section flex justify-content-between align-items-center">
+        <h2 class="m-0">Products</h2>
+        <div>
+            <p-button label="Show Graph" icon="pi pi-chart-bar" (click)="toggleGraph()"
+                class="p-button-info  mr-2"></p-button>
+            <p-button label="Add Product" icon="pi pi-plus" (click)="showAddModal()"
+                class="p-button-success"></p-button>
+        </div>
+    </div>
+
+    <p-table #dt [value]="products" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="8"
+        [sortMode]="'multiple'" [globalFilterFields]="['title', 'category', 'price']" responsiveLayout="scroll">
+        <ng-template pTemplate="caption">
+            <div class="table-header">
+                <input pInputText type="text" placeholder="Global Search" (input)="onGlobalFilter($event, dt)"
+                    style="width: 100%;" />
+            </div>
+
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="title">Name <p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+                <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price }}</td>
+                <td class="actions-cell">
+                    <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info p-button-sm mr-2"
+                        (click)="showEditModal(product)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
+                        (click)="deleteProduct(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5" class="text-center">No products found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+<!-- Add Product Modal -->
+<app-product-add-edit [displayAddEditModal]="displayAddEditModal" [selectedProduct]="selectedProduct"
+    (clickClose)="hideAddModal($event)" (clickAdd)="saveProducts($event)"></app-product-add-edit>
+
+<!-- Delete-Confirmation Dialog -->
+<p-confirmDialog header="Delete"></p-confirmDialog>
+
+<!-- Toastr -->
+<p-toast position="top-right"></p-toast>
+
+<!-- Bar Chart Component -->
+<div *ngIf="showGraph">
+    <app-bar-chart [products]="products"></app-bar-chart>
+</div>
+  

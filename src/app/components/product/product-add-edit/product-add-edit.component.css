@@ -1,0 +1,9 @@
+:host >>> .product-form .p-component{
+    width: 100%;
+}
+
+.invalid-input {
+    border: 1px solid red;
+    /* Red border for invalid state */
+}
+
